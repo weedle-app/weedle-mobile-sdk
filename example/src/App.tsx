@@ -6,7 +6,7 @@ import { WeedleRnSdkView } from 'weedle-rn-sdk';
 export default function App() {
   return (
     <View style={styles.container}>
-      <WeedleRnSdkViewManager color="#32a852" style={styles.box} />
+      <WeedleRnSdkView />
     </View>
   );
 }
