@@ -303,7 +303,7 @@ PODS:
     - React-Core
   - RNSVG (9.6.4):
     - React
-  - weedle-rn-sdk (0.1.0):
+  - weedle-rn-sdk (0.1.1):
     - React-Core
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
@@ -483,7 +483,7 @@ SPEC CHECKSUMS:
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
   RNCAsyncStorage: b49b4e38a1548d03b74b30e558a1d18465b94be7
   RNSVG: a53a5de0d90ec96a6502cc3a4534dfcc0c130622
-  weedle-rn-sdk: 08486341ca0ba93372e4d46fa461a631f3ea5c35
+  weedle-rn-sdk: c6145dc1383c3f103440f30526cddd4513446628
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
