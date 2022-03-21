@@ -3,3 +3,5 @@ export interface InitOptions {
   appId: string | undefined;
   automaticDataCollectionEnabled?: boolean;
 }
+
+export type ChainType = 'ethereum';

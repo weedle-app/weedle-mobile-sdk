@@ -1,6 +1,8 @@
 import type { AuthServiceProviderProps } from '../packages/auth';
 import AuthServiceProvider from '../packages/auth';
 import type { InitOptions } from './types';
+import * as NFTApi from '../packages/nfts';
+import type { NFTServiceProviderProps } from '../packages/nfts';
 
 export const validateAppConfig = (options: InitOptions): boolean => {
   if (!options.appId) {
@@ -29,5 +31,9 @@ export default class WeedleApp {
   auth({ adapter, options }: AuthServiceProviderProps) {
     validateAppConfig(this._config);
     return AuthServiceProvider({ adapter, options });
+  }
+
+  nfts(): NFTServiceProviderProps {
+    return NFTApi.getNFTAPIFactory();
   }
 }
