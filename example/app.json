@@ -1,4 +1,7 @@
 {
   "name": "WeedleRnSdkExample",
-  "displayName": "WeedleRnSdk Example"
+  "displayName": "WeedleRnSdk Example",
+  "expo": {
+    "scheme": "wex"
+  }
 }
