@@ -1,5 +1,9 @@
-import React from 'react';
+import { initialize } from './internal/registry';
+export { default as AuthServiceProvider } from './packages/auth';
+import * as WeedleNFT from './packages/nfts';
+export * from './packages/app';
 
-import WalletConnect from './Auth/WalletConnect/WalletConnect';
-
-export const WeedleRnSdkView = () => <WalletConnect />;
+export default {
+  initialize,
+  WeedleNFT,
+};
