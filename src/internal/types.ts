@@ -1,7 +1,9 @@
+export type ProvidersType = 'alchemy' | 'weedle' | undefined;
+
 export interface InitOptions {
   serverUrl: string | undefined;
   appId: string | undefined;
-  automaticDataCollectionEnabled?: boolean;
+  chain?: ProvidersType;
 }
 
 export type ChainType = 'ethereum';

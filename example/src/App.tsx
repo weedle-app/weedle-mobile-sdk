@@ -65,22 +65,29 @@ const authProps: AuthServiceProviderProps = {
 };
 
 export default function App() {
+  const client = WeedleRnSdkView.initialize({
+    appId: 'someId',
+    serverUrl: 'ddd',
+    chain: 'alchemy',
+  });
+
   useEffect(() => {
     (async () => {
       const initialUrl = await Linking.getInitialURL();
       console.log({ initialUrl });
     })();
+
     Linking.addEventListener('url', (link) => {
       console.log({ link: link.url });
     });
+
+    console.log(client.nfts().getUsersNFTs({ userWalletAddress: '' }));
+
     return () => {
       Linking.removeEventListener('url', console.log);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const client = WeedleRnSdkView.initialize({
-    appId: 'someId',
-    serverUrl: 'ddd',
-  });
 
   return (
     <View style={styles.container}>
