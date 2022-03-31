@@ -19,6 +19,10 @@ class HttpRequestClient implements HttpRequestClientType {
     this.axiosInstance = axios.create(props);
   }
 
+  checkConfig(): void {
+    console.log({ xagetUsersNFTs: this.axiosInstance.defaults });
+  }
+
   get<T>(url: string, options: Record<string, unknown> = {}): Promise<T> {
     return this.axiosInstance.get(url, options);
   }

@@ -1,4 +1,5 @@
 import type { InitOptions } from '../../../internal/types';
+import { getHttpClient } from '../../../utils/http-request-client';
 import BasePackage from '../../base-package';
 import type {
   GetNFTForUsersInputProps,
@@ -12,12 +13,16 @@ import type {
 
 const NFTQueryApi = (config: InitOptions) =>
   class extends BasePackage implements NFTServiceProvider {
+    httpClient = getHttpClient();
+
     constructor() {
       super(config);
     }
 
     getUsersNFTs(props: GetNFTForUsersInputProps): GetNFTForUsersResponse {
-      console.log({ props, c: config });
+      console.log({
+        props,
+      });
       return undefined as any;
     }
     getNFTMetadata(props: GetNFTMetadataInputProps): GetNFTMetadataResponse {

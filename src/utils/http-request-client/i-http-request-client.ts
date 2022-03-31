@@ -6,8 +6,9 @@ export default interface HttpRequestClientType {
     options?: Record<string, unknown>
   ): Promise<T>;
   setHttpClientConfig(props: {
-    baseUrl: string;
-    timeout: number;
-    headers: Record<string, string>;
+    baseUrl?: string;
+    timeout?: number;
+    headers?: Record<string, string>;
   }): void;
+  checkConfig(): void;
 }

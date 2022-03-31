@@ -3,6 +3,7 @@ import AuthServiceProvider from '../packages/auth';
 import type { InitOptions } from './types';
 import * as NFTApi from '../packages/nfts';
 import type { NFTServiceProvider } from '../packages/nfts/nft-types';
+import { getHttpClient } from '../utils/http-request-client';
 
 export const validateAppConfig = (options: InitOptions): boolean => {
   if (!options.appId) {
@@ -21,6 +22,10 @@ export default class WeedleApp {
   constructor(private readonly _config: InitOptions) {
     if (validateAppConfig(_config)) {
       this.isInitialized = true;
+      getHttpClient().setHttpClientConfig({
+        baseUrl: _config.serverUrl,
+        timeout: 60000,
+      });
     }
   }
 
