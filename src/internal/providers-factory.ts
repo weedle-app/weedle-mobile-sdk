@@ -19,7 +19,7 @@ const getClientId = (environment: string): number => {
   }
 };
 
-export const weedleProviderFactory = (
+export const WeedleProviderFactory = (
   environment: EnvironmentNameType = 'ropsten',
   url = '',
   writerObject?: any

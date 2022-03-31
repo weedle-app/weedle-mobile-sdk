@@ -5,5 +5,5 @@ export * from './packages/app';
 
 export default {
   initialize,
-  WeedleNFT,
+  WeedleNFT: WeedleNFT.default,
 };
