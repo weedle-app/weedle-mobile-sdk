@@ -6,6 +6,7 @@ export interface GetNFTForUsersInputProps {
   startFromPage?: string | number;
   filterForContractsOnly?: Array<string>;
   provider?: ProvidersType;
+  returnRawResponse?: boolean;
 }
 
 export interface GetNFTMetadataInputProps {
@@ -29,39 +30,34 @@ interface NFTMediaType {
 }
 
 interface MetaData {
-  image: string;
-  externalUrl: string;
-  backgroundColor: string;
   name: string;
   description: string;
-  attributes: string;
-  genericAttributes: any;
+  attributes: string | any;
+  otherAttributes?: any;
 }
 
-interface NFTInstance {
+export interface NFTQueryModel {
   contract: {
     address: string;
   };
-  NFTId: {
-    tokenId: number;
-    tokenMetadata: {
-      tokenType: NFTTokenType;
-    };
-  };
+  tokenId: string;
+  tokenType: string;
   title: string;
   description: string;
-  tokenUri: NFTMediaType;
-  media: NFTMediaType;
-  balance: string;
+  tokenMedia: NFTMediaType;
+  nftMedia: NFTMediaType[] | NFTMediaType;
+  balance: number;
   metadata: MetaData;
-  totalPages: number;
-  pageKey: string;
-  blockHash: string;
-  error: string;
+  totalPages?: number | undefined;
+  pageKey?: string;
+  block?: {
+    hash: string;
+  };
+  lastUpdate?: string;
 }
 
 export interface GetNFTForUsersResponse {
-  nfts: Array<NFTInstance> | RawProviderResponse;
+  nfts: Array<NFTQueryModel> | RawProviderResponse;
 }
 
 export interface GetNFTMetadataResponse {
@@ -69,7 +65,7 @@ export interface GetNFTMetadataResponse {
 }
 
 export interface GetNFTsInCollectionResponse {
-  nfts: Array<NFTInstance> | RawProviderResponse;
+  nfts: Array<NFTQueryModel> | RawProviderResponse;
 }
 
 export type RawProviderResponse = any;

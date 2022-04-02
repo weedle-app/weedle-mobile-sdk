@@ -1,4 +1,3 @@
-import type { InitOptions } from '../../app/internal/types';
 import logger from '../logger';
 import type { ConnectionInfo, Network } from './web-types';
 
@@ -13,17 +12,6 @@ export default class AlchemyHelper {
       logger.throwArgumentError('invalid apiKey', 'apiKey', apiKey);
     }
     return apiKey;
-  }
-
-  static validateOptions(options: InitOptions): void {
-    if (
-      !options.serverUrl &&
-      !(options.appId && options.chain && options.network)
-    ) {
-      throw new Error(
-        'Could not initialize provider, please provide all necessary params.'
-      );
-    }
   }
 
   static getUrl(network: Network | string, apiKey: string): ConnectionInfo {

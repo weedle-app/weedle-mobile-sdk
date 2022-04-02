@@ -1,7 +1,8 @@
+import { parseAppConfig } from '../../shared/config-helper';
 import type { InitOptions } from './types';
-import WeedleApp, { validateAppConfig } from './WeedleApp';
+import WeedleApp from './WeedleApp';
 
 export const initialize = (options: InitOptions) => {
-  validateAppConfig(options);
-  return new WeedleApp(options);
+  const config = parseAppConfig(options);
+  return new WeedleApp(config);
 };

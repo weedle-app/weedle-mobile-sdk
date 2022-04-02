@@ -150,9 +150,7 @@
   "dependencies": {
     "@walletconnect/web3-provider": "^1.7.5",
     "axios": "^0.26.1",
-    "class-transformer": "^0.5.1",
     "ethers": "^5.5.4",
-    "reflect-metadata": "^0.1.13",
     "web3": "^1.7.1"
   }
 }
