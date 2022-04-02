@@ -66,9 +66,11 @@ const authProps: AuthServiceProviderProps = {
 
 export default function App() {
   const client = WeedleRnSdkView.initialize({
-    appId: 'someId',
-    serverUrl: 'ddd',
-    chain: 'alchemy',
+    appId: '10Z3HWpQBShRgm5Bg-vWcltJOiDP4RUQ',
+    serverUrl: 'https://eth-mainnet.alchemyapi.io',
+    chain: 'ethereum',
+    network: 'ropsten',
+    provider: 'alchemy',
   });
 
   useEffect(() => {
@@ -81,7 +83,11 @@ export default function App() {
       console.log({ link: link.url });
     });
 
-    console.log(client.nfts().getUsersNFTs({ userWalletAddress: '' }));
+    console.log(
+      client.nfts().getUsersNFTs({
+        userWalletAddress: '0xfAE46f94Ee7B2Acb497CEcAFf6Cff17F621c693D',
+      })
+    );
 
     return () => {
       Linking.removeEventListener('url', console.log);
