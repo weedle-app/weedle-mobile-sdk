@@ -1,4 +1,4 @@
-import type { InitOptions } from '../../internal/types';
+import type { InitOptions } from '../app/internal/types';
 import { AlchemyNFTQueryApi } from './alchemy';
 import type { NFTServiceProvider } from './nft-types';
 

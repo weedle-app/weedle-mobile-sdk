@@ -1,4 +1,4 @@
-import type { InitOptions } from '../../internal/types';
+import type { InitOptions } from '../app/internal/types';
 import type {
   GetNFTForUsersInputProps,
   GetNFTForUsersResponse,
@@ -25,26 +25,28 @@ class NFTModule implements NFTServiceProvider {
     this._config = options;
   }
 
-  private getCurrentChain() {
-    return this._config.chain || 'weedle';
+  private getCurrentProvider() {
+    return this._config.provider || 'weedle';
   }
 
   private validateApiCall(functionName: string) {
-    const chain = this.getCurrentChain();
+    const provider = this.getCurrentProvider();
     const nftProviderRegistry: any = NFTProviderRegistry(this._config);
 
-    if (!chain || !nftProviderRegistry[chain]) throw new Error('');
+    if (!provider || !nftProviderRegistry[provider]) throw new Error('');
 
-    if (typeof nftProviderRegistry[chain][functionName] === undefined)
+    if (typeof nftProviderRegistry[provider][functionName] === undefined)
       throw new Error('');
   }
 
-  getUsersNFTs(props: GetNFTForUsersInputProps): GetNFTForUsersResponse {
+  getUsersNFTs(
+    props: GetNFTForUsersInputProps
+  ): Promise<GetNFTForUsersResponse> {
     const nftProviderRegistry: any = NFTProviderRegistry(this._config);
 
     this.validateApiCall('getUsersNFTs');
 
-    return nftProviderRegistry[this.getCurrentChain()]?.getUsersNFTs(props);
+    return nftProviderRegistry[this.getCurrentProvider()]?.getUsersNFTs(props);
   }
 
   getNFTMetadata(props: GetNFTMetadataInputProps): GetNFTMetadataResponse {
@@ -53,7 +55,9 @@ class NFTModule implements NFTServiceProvider {
 
     this.validateApiCall('getNFTMetadata');
 
-    return nftProviderRegistry[this.getCurrentChain()]?.getNFTMetadata(props);
+    return nftProviderRegistry[this.getCurrentProvider()]?.getNFTMetadata(
+      props
+    );
   }
 
   getNFTsInCollection(
@@ -64,7 +68,7 @@ class NFTModule implements NFTServiceProvider {
 
     this.validateApiCall('getNFTsInCollection');
 
-    return nftProviderRegistry[this.getCurrentChain()]?.getNFTsInCollection(
+    return nftProviderRegistry[this.getCurrentProvider()]?.getNFTsInCollection(
       props
     );
   }

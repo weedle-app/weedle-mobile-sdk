@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from 'react';
-import type WeedleApp from '../../internal/WeedleApp';
+import type WeedleApp from './internal/WeedleApp';
 
 type Web3ProviderNameType = 'alchemy' | 'infura' | 'mainnet';
 

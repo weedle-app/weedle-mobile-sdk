@@ -1,4 +1,4 @@
-import type { InitOptions } from '../../internal/types';
+import type { InitOptions } from '../app/internal/types';
 import type { NFTServiceProvider } from './nft-types';
 import NFTModule from './NFTModule';
 

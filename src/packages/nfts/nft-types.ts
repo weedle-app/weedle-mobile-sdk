@@ -1,4 +1,4 @@
-import type { ProvidersType } from '../../internal/types';
+import type { ProvidersType } from '../app/internal/types';
 
 export interface GetNFTForUsersInputProps {
   userWalletAddress: string;
@@ -75,7 +75,9 @@ export interface GetNFTsInCollectionResponse {
 export type RawProviderResponse = any;
 
 export interface NFTServiceProvider {
-  getUsersNFTs: (props: GetNFTForUsersInputProps) => GetNFTForUsersResponse;
+  getUsersNFTs: (
+    props: GetNFTForUsersInputProps
+  ) => Promise<GetNFTForUsersResponse>;
   getNFTMetadata: (props: GetNFTMetadataInputProps) => GetNFTMetadataResponse;
   getNFTsInCollection: (
     props: GetNFTsInCollectionProps

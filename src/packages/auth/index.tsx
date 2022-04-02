@@ -7,7 +7,7 @@ import WalletConnectProvider, {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { IAsyncStorage } from './WalletConnect/AsyncStorage';
 import { useWeedleApp } from '../app';
-import { validateAppConfig } from '../../internal/WeedleApp';
+import { validateAppConfig } from '../app/internal/WeedleApp';
 
 type AuthAdapterTypes = 'walletconnect' | string;
 type AuthAdapterOptions = Partial<WalletConnectProviderProps>;
