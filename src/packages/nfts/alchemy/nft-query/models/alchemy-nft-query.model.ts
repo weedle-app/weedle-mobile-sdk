@@ -36,35 +36,42 @@ export interface AlchemyNFTContractResponse {
 
 class AlchemyNFTModelTransformer {
   static toCommonQueryModel(
-    alchemyQueryResponse: AlchemyNFTContractResponse
+    alchemyQueryResponse: AlchemyNFTContractResponse,
+    blockHash: string,
+    owner: string
   ): NFTQueryModel {
+    const {
+      contract,
+      id,
+      balance,
+      title,
+      description,
+      media,
+      tokenUri,
+      timeLastUpdated,
+      ...rest
+    } = alchemyQueryResponse;
+
     return {
       contract: {
-        address: alchemyQueryResponse.contract.address,
+        address: contract.address,
+        type: id.tokenMetadata.tokenType,
       },
-      tokenId: alchemyQueryResponse.id.tokenId,
-      tokenType: alchemyQueryResponse.id.tokenMetadata.tokenType,
-      balance: alchemyQueryResponse.balance as number,
-      /* block: {
-        hash: alchemyQueryResponse.blockHash || '',
+      block: {
+        hash: blockHash,
       },
-      totalPages: alchemyQueryResponse.totalCount || 0, */
-      title: alchemyQueryResponse.title,
-      description: alchemyQueryResponse.description,
-      nftMedia: alchemyQueryResponse.media,
+      tokenId: id.tokenId,
+      balance: balance as number,
+      title: title,
+      description: description,
+      owner,
+      nftMedia: media.map(({ raw, gateway }) => ({ raw, uri: gateway })),
       tokenMedia: {
-        gateway: alchemyQueryResponse.tokenUri.gateway,
-        raw: alchemyQueryResponse.tokenUri.raw,
+        uri: tokenUri.gateway,
+        raw: tokenUri.raw,
       },
-      lastUpdate: alchemyQueryResponse.timeLastUpdated,
-      metadata: {
-        attributes: alchemyQueryResponse.metadata.attributes,
-        description: alchemyQueryResponse.metadata.description,
-        name: alchemyQueryResponse.metadata.name,
-        otherAttributes: {
-          image: alchemyQueryResponse.metadata.image,
-        },
-      },
+      lastUpdate: timeLastUpdated,
+      metadata: rest,
     };
   }
 }

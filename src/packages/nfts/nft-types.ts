@@ -24,9 +24,9 @@ export interface GetNFTsInCollectionProps {
 
 type NFTTokenType = 'ERC721' | 'ERC1155';
 
-interface NFTMediaType {
+interface NFTMedia {
   raw: string;
-  gateway: string;
+  uri: string;
 }
 
 interface MetaData {
@@ -39,25 +39,31 @@ interface MetaData {
 export interface NFTQueryModel {
   contract: {
     address: string;
+    type: string;
+  };
+  block: {
+    hash: string;
+    minted?: string;
   };
   tokenId: string;
-  tokenType: string;
   title: string;
-  description: string;
-  tokenMedia: NFTMediaType;
-  nftMedia: NFTMediaType[] | NFTMediaType;
   balance: number;
-  metadata: MetaData;
-  totalPages?: number | undefined;
-  pageKey?: string;
-  block?: {
-    hash: string;
-  };
+  nftMedia: NFTMedia[] | NFTMedia;
+  owner: string;
+  metadata: any;
+  description?: string;
+  tokenMedia?: NFTMedia[] | NFTMedia;
   lastUpdate?: string;
 }
 
+export interface NFTsListFromQuery {
+  nfts: Array<NFTQueryModel>;
+  totalPages?: number | undefined;
+  pageKey?: string;
+}
+
 export interface GetNFTForUsersResponse {
-  nfts: Array<NFTQueryModel> | RawProviderResponse;
+  nfts: NFTsListFromQuery | RawProviderResponse;
 }
 
 export interface GetNFTMetadataResponse {

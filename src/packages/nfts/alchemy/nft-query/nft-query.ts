@@ -42,7 +42,12 @@ const NFTQueryApi = (config: InitOptions) =>
         }
 
         const nfts: Array<NFTQueryModel> = nftQueryResponse.data.ownedNfts.map(
-          (nft) => this.modelTransformer.toCommonQueryModel(nft)
+          (nft) =>
+            this.modelTransformer.toCommonQueryModel(
+              nft,
+              nftQueryResponse.data.blockHash,
+              props.userWalletAddress
+            )
         );
 
         return { nfts };
