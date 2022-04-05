@@ -6,18 +6,19 @@ import type {
   GetNFTMetadataResponse,
   GetNFTsInCollectionProps,
   GetNFTsInCollectionResponse,
-  NFTServiceProvider,
+  NFTModuleType,
+  NFTProvidersRegistryType,
+  NFTServiceProviderType,
 } from './nft-types';
 import NFTProviderRegistry from './registry';
 
-class NFTModule implements NFTServiceProvider {
+class NFTModule implements NFTModuleType {
   private static _instance: NFTModule;
   private _config: InitOptions = { appId: '', serverUrl: '' };
 
   private constructor() {}
 
   public static get Instance() {
-    // Do you need arguments? Make it a regular static method instead.
     return this._instance || (this._instance = new this());
   }
 
@@ -25,52 +26,67 @@ class NFTModule implements NFTServiceProvider {
     this._config = options;
   }
 
-  private getCurrentProvider() {
+  private getCurrentProviderName() {
     return this._config.provider || 'weedle';
   }
 
   private validateApiCall(functionName: string) {
-    const provider = this.getCurrentProvider();
+    const provider = this.getCurrentProviderName() as string;
     const nftProviderRegistry: any = NFTProviderRegistry(this._config);
 
+    // TODO - Add an error message for th throw
     if (!provider || !nftProviderRegistry[provider]) throw new Error('');
 
     if (typeof nftProviderRegistry[provider][functionName] === undefined)
       throw new Error('');
   }
 
+  getCurrentProviderInstance(): NFTServiceProviderType {
+    const nftProviderRegistry: NFTProvidersRegistryType = NFTProviderRegistry(
+      this._config
+    );
+    return nftProviderRegistry[this.getCurrentProviderName()];
+  }
+
   getUsersNFTs(
     props: GetNFTForUsersInputProps
   ): Promise<GetNFTForUsersResponse> {
-    const nftProviderRegistry: any = NFTProviderRegistry(this._config);
+    const nftProviderRegistry: NFTProvidersRegistryType = NFTProviderRegistry(
+      this._config
+    );
 
     this.validateApiCall('getUsersNFTs');
 
-    return nftProviderRegistry[this.getCurrentProvider()]?.getUsersNFTs(props);
+    return nftProviderRegistry[this.getCurrentProviderName()]?.getUsersNFTs(
+      props
+    );
   }
 
-  getNFTMetadata(props: GetNFTMetadataInputProps): GetNFTMetadataResponse {
-    const nftProviderRegistry: Record<string, NFTServiceProvider> =
-      NFTProviderRegistry(this._config);
+  getNFTMetadata(
+    props: GetNFTMetadataInputProps
+  ): Promise<GetNFTMetadataResponse> {
+    const nftProviderRegistry: NFTProvidersRegistryType = NFTProviderRegistry(
+      this._config
+    );
 
     this.validateApiCall('getNFTMetadata');
 
-    return nftProviderRegistry[this.getCurrentProvider()]?.getNFTMetadata(
+    return nftProviderRegistry[this.getCurrentProviderName()]?.getNFTMetadata(
       props
     );
   }
 
   getNFTsInCollection(
     props: GetNFTsInCollectionProps
-  ): GetNFTsInCollectionResponse {
-    const nftProviderRegistry: Record<string, NFTServiceProvider> =
+  ): Promise<GetNFTsInCollectionResponse> {
+    const nftProviderRegistry: Record<string, NFTServiceProviderType> =
       NFTProviderRegistry(this._config);
 
     this.validateApiCall('getNFTsInCollection');
 
-    return nftProviderRegistry[this.getCurrentProvider()]?.getNFTsInCollection(
-      props
-    );
+    return nftProviderRegistry[
+      this.getCurrentProviderName()
+    ]?.getNFTsInCollection(props);
   }
 }
 

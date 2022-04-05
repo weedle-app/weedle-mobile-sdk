@@ -1,6 +1,6 @@
-import type { NFTQueryModel } from '../../../nft-types';
+import type { NFTMetaData, NFTQueryModel } from '../../../nft-types';
 
-export interface AlchemyNFTQueryResponse {
+export interface AlchemyGetUsersNFTResponse {
   ownedNfts: AlchemyNFTContractResponse[];
   blockHash: string;
   totalCount: number;
@@ -14,7 +14,7 @@ export interface AlchemyNFTContractResponse {
       tokenType: string;
     };
   };
-  balance: number | string;
+  balance?: number | string;
   title: string;
   description: string;
   tokenUri: {
@@ -25,13 +25,17 @@ export interface AlchemyNFTContractResponse {
     raw: string;
     gateway: string;
   }>;
-  metadata: {
-    name: string;
-    description: string;
-    image?: string;
-    attributes: any;
-  };
+  metadata: any;
   timeLastUpdated: string;
+}
+
+export type AlchemyGetMetadataResponse = AlchemyNFTContractResponse & {
+  timeLastUpdated: string;
+};
+
+export interface AlchemyNFTsInCollectionResponse {
+  nfts: Array<AlchemyNFTContractResponse>;
+  nextToken: string;
 }
 
 class AlchemyNFTModelTransformer {
@@ -65,6 +69,70 @@ class AlchemyNFTModelTransformer {
       title: title,
       description: description,
       owner,
+      nftMedia: media.map(({ raw, gateway }) => ({ raw, uri: gateway })),
+      tokenMedia: {
+        uri: tokenUri.gateway,
+        raw: tokenUri.raw,
+      },
+      lastUpdate: timeLastUpdated,
+      metadata: rest,
+    };
+  }
+
+  static toCommonMetaDataModel(
+    alchemyQueryResponse: AlchemyGetMetadataResponse
+  ): NFTMetaData {
+    const {
+      contract,
+      description,
+      id,
+      media,
+      metadata,
+      title,
+      tokenUri,
+      timeLastUpdated,
+    } = alchemyQueryResponse;
+
+    return {
+      contract: {
+        address: contract.address,
+        type: id.tokenMetadata.tokenType,
+      },
+      description,
+      tokenId: id.tokenId,
+      nftMedia: media.map(({ raw, gateway }) => ({ raw, uri: gateway })),
+      tokenMedia: {
+        uri: tokenUri.gateway,
+        raw: tokenUri.raw,
+      },
+      title,
+      metadata,
+      lastUpdate: timeLastUpdated,
+    };
+  }
+
+  static toCommonNFTsInCollectionModel(
+    alchemyQueryResponse: AlchemyNFTContractResponse
+  ): NFTQueryModel {
+    const {
+      contract,
+      id,
+      title,
+      description,
+      media,
+      tokenUri,
+      timeLastUpdated,
+      ...rest
+    } = alchemyQueryResponse;
+
+    return {
+      contract: {
+        address: contract.address,
+        type: id.tokenMetadata.tokenType,
+      },
+      tokenId: id.tokenId,
+      title: title,
+      description: description,
       nftMedia: media.map(({ raw, gateway }) => ({ raw, uri: gateway })),
       tokenMedia: {
         uri: tokenUri.gateway,

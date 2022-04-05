@@ -2,7 +2,7 @@ import type { AuthServiceProviderProps } from '../../auth';
 import AuthServiceProvider from '../../auth';
 import type { InitOptions } from './types';
 import * as NFTApi from '../../nfts';
-import type { NFTServiceProvider } from '../../nfts/nft-types';
+import type { NFTModuleType } from '../../nfts/nft-types';
 import { getHttpClient } from '../../shared/http-request-client';
 import { parseAppConfig } from '../../shared/config-helper';
 
@@ -32,7 +32,7 @@ export default class WeedleApp {
     return AuthServiceProvider({ adapter, options });
   }
 
-  nfts(): NFTServiceProvider {
+  nfts(): NFTModuleType {
     return NFTApi.default(this.config);
   }
 }

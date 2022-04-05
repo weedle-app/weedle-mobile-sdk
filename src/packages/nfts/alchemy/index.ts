@@ -1,1 +1,1 @@
-export { default as AlchemyNFTQueryApi } from './nft-query/nft-query';
+export { default as AlchemyNFTQueryApi } from './nft-query';

@@ -14,26 +14,35 @@ export interface GetNFTMetadataInputProps {
   tokenId: string | number;
   provider?: ProvidersType;
   tokenType?: NFTTokenType;
+  returnRawResponse?: boolean;
 }
 
 export interface GetNFTsInCollectionProps {
   contractAddress: string;
   withMetadata: boolean;
   startFromPage: string | number;
+  returnRawResponse?: boolean;
 }
 
 type NFTTokenType = 'ERC721' | 'ERC1155';
 
 interface NFTMedia {
-  raw: string;
-  uri: string;
+  raw?: string;
+  uri?: string;
 }
 
-interface MetaData {
-  name: string;
+export interface NFTMetaData {
+  contract: {
+    address: string;
+    type: string;
+  };
+  tokenId: string;
+  title: string;
   description: string;
-  attributes: string | any;
-  otherAttributes?: any;
+  tokenMedia: NFTMedia;
+  nftMedia: NFTMedia[] | NFTMedia;
+  metadata?: any;
+  lastUpdate?: string;
 }
 
 export interface NFTQueryModel {
@@ -41,18 +50,18 @@ export interface NFTQueryModel {
     address: string;
     type: string;
   };
-  block: {
+  block?: {
     hash: string;
     minted?: string;
   };
   tokenId: string;
   title: string;
-  balance: number;
+  balance?: number;
+  tokenMedia: NFTMedia;
   nftMedia: NFTMedia[] | NFTMedia;
-  owner: string;
+  owner?: string;
   metadata: any;
   description?: string;
-  tokenMedia?: NFTMedia[] | NFTMedia;
   lastUpdate?: string;
 }
 
@@ -67,21 +76,33 @@ export interface GetNFTForUsersResponse {
 }
 
 export interface GetNFTMetadataResponse {
-  nftMetadata: MetaData | RawProviderResponse;
+  nftMetadata: NFTMetaData | RawProviderResponse;
 }
 
 export interface GetNFTsInCollectionResponse {
   nfts: Array<NFTQueryModel> | RawProviderResponse;
+  nextPageToken: string;
 }
 
 export type RawProviderResponse = any;
 
-export interface NFTServiceProvider {
+export interface NFTModuleType {
   getUsersNFTs: (
     props: GetNFTForUsersInputProps
   ) => Promise<GetNFTForUsersResponse>;
-  getNFTMetadata: (props: GetNFTMetadataInputProps) => GetNFTMetadataResponse;
+  getNFTMetadata: (
+    props: GetNFTMetadataInputProps
+  ) => Promise<GetNFTMetadataResponse>;
   getNFTsInCollection: (
     props: GetNFTsInCollectionProps
-  ) => GetNFTsInCollectionResponse;
+  ) => Promise<GetNFTsInCollectionResponse>;
+  getCurrentProviderInstance(): NFTServiceProviderType;
 }
+
+interface NFTServiceProvider {
+  getProviderName(): string | undefined;
+}
+
+export type NFTServiceProviderType = NFTModuleType & NFTServiceProvider;
+
+export type NFTProvidersRegistryType = Record<string, NFTServiceProviderType>;
