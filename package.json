@@ -1,6 +1,6 @@
 {
   "name": "weedle-rn-sdk",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Weedle Mobile SDK for Web3",
   "main": "lib/commonjs/index.js",
   "module": "lib/module/index.js",
