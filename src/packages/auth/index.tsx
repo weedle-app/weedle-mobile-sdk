@@ -7,7 +7,7 @@ import WalletConnectProvider, {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { IAsyncStorage } from './WalletConnect/AsyncStorage';
 import { useWeedleApp } from '../app';
-import { validateAppConfig } from '../../internal/WeedleApp';
+import { parseAppConfig } from '../shared/config-helper';
 
 type AuthAdapterTypes = 'walletconnect' | string;
 type AuthAdapterOptions = Partial<WalletConnectProviderProps>;
@@ -37,8 +37,8 @@ const AuthServiceProvider = (
     throw new Error('Please provide an adapter type you wish to use.');
   }
 
-  const { appId, serverUrl } = useWeedleApp();
-  validateAppConfig({ appId, serverUrl });
+  const { options } = useWeedleApp();
+  parseAppConfig(options);
 
   const renderAuthContainer = () => {
     switch (props.adapter) {

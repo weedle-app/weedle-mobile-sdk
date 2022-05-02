@@ -9,6 +9,10 @@ import WeedleRnSdkView, {
   WeedleProvider,
 } from 'weedle-rn-sdk';
 import type { AuthServiceProviderProps } from '../../src/packages/auth';
+import type {
+  NFTQueryModel,
+  RawProviderResponse,
+} from '../../src/packages/nfts/nft-types';
 // import GreeterABI from './web3/artifacts/contracts/Greeter.sol/Greeter.json';
 
 // const contractAddress = '0x3d25ee677D981Fcb9d4Cefe603C7315AA33a82bb';
@@ -23,7 +27,6 @@ const HandleWalletConnect = () => {
   const [signer, setSigner] = useState<JsonRpcSigner>(); */
   const connector = useWalletConnect();
   const [isConnected, setIsConnected] = useState(false);
-  // const { getEvmBlock } = WeedleRnSdkView.WeedleNFT.useWeedleNFT();
 
   useEffect(() => {
     setIsConnected(connector.connected);
@@ -66,22 +69,32 @@ const authProps: AuthServiceProviderProps = {
 
 export default function App() {
   const client = WeedleRnSdkView.initialize({
-    appId: 'someId',
-    serverUrl: 'ddd',
-    chain: 'alchemy',
+    appId: 'demo',
+    serverUrl: 'https://eth-mainnet.alchemyapi.io',
+    chain: 'ethereum',
+    network: 'homestead',
+    provider: 'alchemy',
   });
 
   useEffect(() => {
     (async () => {
       const initialUrl = await Linking.getInitialURL();
       console.log({ initialUrl });
+
+      const nfList: RawProviderResponse = await client.nfts().getUsersNFTs({
+        userWalletAddress: '0xfAE46f94Ee7B2Acb497CEcAFf6Cff17F621c693D',
+        returnRawResponse: true,
+      });
+
+      console.log({ bash: nfList.blockHash });
+      /* nfList.nfts.forEach((nft: RawProviderResponse) =>
+        console.log({ a: nft.blockHash })
+      ); */
     })();
 
     Linking.addEventListener('url', (link) => {
       console.log({ link: link.url });
     });
-
-    console.log(client.nfts().getUsersNFTs({ userWalletAddress: '' }));
 
     return () => {
       Linking.removeEventListener('url', console.log);

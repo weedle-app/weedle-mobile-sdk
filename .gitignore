@@ -65,3 +65,4 @@ lib/
 
 *.tgz
 /artifacts
+play.ts

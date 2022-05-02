@@ -1,25 +1,23 @@
 import React, { createContext, useContext } from 'react';
-import type WeedleApp from '../../internal/WeedleApp';
-
-type Web3ProviderNameType = 'alchemy' | 'infura' | 'mainnet';
-
-interface Web3provider {
-  name: Web3ProviderNameType;
-}
+import type { InitOptions } from './internal/types';
+import type WeedleApp from './internal/WeedleApp';
 
 interface WeedleProviderProps {
-  appId: string | undefined;
-  serverUrl: string | undefined;
-  web3Provider?: Web3provider;
+  options: InitOptions;
 }
 
 interface WeedleContextProps {
   client: WeedleApp;
 }
 
-const initOptions = {
-  appId: undefined,
-  serverUrl: undefined,
+const initOptions: WeedleProviderProps = {
+  options: {
+    appId: undefined,
+    serverUrl: undefined,
+    chain: undefined,
+    network: undefined,
+    provider: undefined,
+  },
 };
 
 const WeedleAppContext = createContext<WeedleProviderProps>(initOptions);
@@ -44,8 +42,9 @@ const WeedleProvider = (props: React.PropsWithChildren<WeedleContextProps>) => {
   return (
     <WeedleAppContext.Provider
       value={{
-        appId: config?.appId,
-        serverUrl: config?.serverUrl,
+        options: {
+          ...config,
+        },
       }}
     >
       {props.children}

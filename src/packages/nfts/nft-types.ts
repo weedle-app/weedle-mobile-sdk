@@ -1,4 +1,4 @@
-import type { ProvidersType } from '../../internal/types';
+import type { ProvidersType } from '../app/internal/types';
 
 export interface GetNFTForUsersInputProps {
   userWalletAddress: string;
@@ -6,6 +6,7 @@ export interface GetNFTForUsersInputProps {
   startFromPage?: string | number;
   filterForContractsOnly?: Array<string>;
   provider?: ProvidersType;
+  returnRawResponse?: boolean;
 }
 
 export interface GetNFTMetadataInputProps {
@@ -13,71 +14,95 @@ export interface GetNFTMetadataInputProps {
   tokenId: string | number;
   provider?: ProvidersType;
   tokenType?: NFTTokenType;
+  returnRawResponse?: boolean;
 }
 
 export interface GetNFTsInCollectionProps {
   contractAddress: string;
   withMetadata: boolean;
   startFromPage: string | number;
+  returnRawResponse?: boolean;
 }
 
 type NFTTokenType = 'ERC721' | 'ERC1155';
 
-interface NFTMediaType {
-  raw: string;
-  gateway: string;
+interface NFTMedia {
+  raw?: string;
+  uri?: string;
 }
 
-interface MetaData {
-  image: string;
-  externalUrl: string;
-  backgroundColor: string;
-  name: string;
-  description: string;
-  attributes: string;
-  genericAttributes: any;
-}
-
-interface NFTInstance {
+export interface NFTMetaData {
   contract: {
     address: string;
+    type: string;
   };
-  NFTId: {
-    tokenId: number;
-    tokenMetadata: {
-      tokenType: NFTTokenType;
-    };
-  };
+  tokenId: string;
   title: string;
   description: string;
-  tokenUri: NFTMediaType;
-  media: NFTMediaType;
-  balance: string;
-  metadata: MetaData;
-  totalPages: number;
-  pageKey: string;
-  blockHash: string;
-  error: string;
+  tokenMedia: NFTMedia;
+  nftMedia: NFTMedia[] | NFTMedia;
+  metadata?: any;
+  lastUpdate?: string;
+}
+
+export interface NFTQueryModel {
+  contract: {
+    address: string;
+    type: string;
+  };
+  block?: {
+    hash: string;
+    minted?: string;
+  };
+  tokenId: string;
+  title: string;
+  balance?: number;
+  tokenMedia: NFTMedia;
+  nftMedia: NFTMedia[] | NFTMedia;
+  owner?: string;
+  metadata: any;
+  description?: string;
+  lastUpdate?: string;
+}
+
+export interface NFTsListFromQuery {
+  nfts: Array<NFTQueryModel>;
+  totalPages?: number | undefined;
+  pageKey?: string;
 }
 
 export interface GetNFTForUsersResponse {
-  nfts: Array<NFTInstance> | RawProviderResponse;
+  nfts: NFTsListFromQuery | RawProviderResponse;
 }
 
 export interface GetNFTMetadataResponse {
-  nftMetadata: MetaData | RawProviderResponse;
+  nftMetadata: NFTMetaData | RawProviderResponse;
 }
 
 export interface GetNFTsInCollectionResponse {
-  nfts: Array<NFTInstance> | RawProviderResponse;
+  nfts: Array<NFTQueryModel> | RawProviderResponse;
+  nextPageToken: string;
 }
 
 export type RawProviderResponse = any;
 
-export interface NFTServiceProvider {
-  getUsersNFTs: (props: GetNFTForUsersInputProps) => GetNFTForUsersResponse;
-  getNFTMetadata: (props: GetNFTMetadataInputProps) => GetNFTMetadataResponse;
+export interface NFTModuleType {
+  getUsersNFTs: (
+    props: GetNFTForUsersInputProps
+  ) => Promise<GetNFTForUsersResponse>;
+  getNFTMetadata: (
+    props: GetNFTMetadataInputProps
+  ) => Promise<GetNFTMetadataResponse>;
   getNFTsInCollection: (
     props: GetNFTsInCollectionProps
-  ) => GetNFTsInCollectionResponse;
+  ) => Promise<GetNFTsInCollectionResponse>;
+  getCurrentProviderInstance(): NFTServiceProviderType;
 }
+
+interface NFTServiceProvider {
+  getProviderName(): string | undefined;
+}
+
+export type NFTServiceProviderType = NFTModuleType & NFTServiceProvider;
+
+export type NFTProvidersRegistryType = Record<string, NFTServiceProviderType>;

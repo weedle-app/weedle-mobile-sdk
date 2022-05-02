@@ -1,4 +1,4 @@
-import type { InitOptions } from '../internal/types';
+import type { InitOptions } from '../app/internal/types';
 
 class BasePackage {
   _config: InitOptions = { appId: '', serverUrl: '' };
