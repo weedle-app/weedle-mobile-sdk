@@ -12,4 +12,8 @@ class BasePackage {
   }
 }
 
+export interface APIParams {
+  contractKey?: string;
+}
+
 export default BasePackage;

@@ -1,4 +1,7 @@
+import type { Signer } from 'ethers';
 import type { ProvidersType } from '../../internal/types';
+import type { APIParams } from '../base-package';
+// import type { ABIContractType } from '../types';
 
 export interface GetNFTForUsersInputProps {
   userWalletAddress: string;
@@ -74,10 +77,31 @@ export interface GetNFTsInCollectionResponse {
 
 export type RawProviderResponse = any;
 
+export interface MintNFTRequest extends APIParams {
+  userAddress: string;
+  signer: Signer;
+  eventHandler: (
+    tokenId: string,
+    userWalletAddress: string,
+    quantityMinted: number
+  ) => void;
+  contract: any;
+  mintingPrice: number;
+  contractAddress?: string;
+  contractId?: string;
+}
+
+export interface MintNFTEvent {
+  tokenId: number;
+  userWalletAddress: string;
+  quantity: number;
+}
+
 export interface NFTServiceProvider {
-  getUsersNFTs: (props: GetNFTForUsersInputProps) => GetNFTForUsersResponse;
+  /* getUsersNFTs: (props: GetNFTForUsersInputProps) => GetNFTForUsersResponse;
   getNFTMetadata: (props: GetNFTMetadataInputProps) => GetNFTMetadataResponse;
   getNFTsInCollection: (
     props: GetNFTsInCollectionProps
-  ) => GetNFTsInCollectionResponse;
+  ) => GetNFTsInCollectionResponse; */
+  mintNFT?: (props: MintNFTRequest) => Promise<void>;
 }

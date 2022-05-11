@@ -30,6 +30,17 @@ class HttpRequestClient implements HttpRequestClientType {
   ): Promise<T> {
     return this.axiosInstance.post(url, body, options);
   }
+
+  async getContractAbi<T>(url: string): Promise<T> {
+    return (
+      await this.axiosInstance.get(url, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      })
+    ).data;
+  }
 }
 
 export default HttpRequestClient;
