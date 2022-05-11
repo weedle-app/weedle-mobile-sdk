@@ -1,4 +1,5 @@
-require('node-libs-react-native/globals.js');
+// leave this as import not a require
+import 'node-libs-react-native/globals.js';
 
 import { AppRegistry } from 'react-native';
 import App from './src/App';
