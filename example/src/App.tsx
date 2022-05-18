@@ -41,17 +41,9 @@ const HandleWalletConnect = ({ client }: { client: WeedleApp }) => {
   };
 
   const testRunContract = async () => {
-    console.log('ddddd');
     if (isConnected) {
       const a = client.nfts('weedle');
 
-      console.log({
-        a: connector.chainId,
-        b: connector.rpcUrl,
-        c: connector.networkId,
-        d: connector.connected,
-        e: connector.clientMeta,
-      });
       const w = new WalletConnectProvider({
         connector,
         qrcode: false,
@@ -62,29 +54,32 @@ const HandleWalletConnect = ({ client }: { client: WeedleApp }) => {
       });
       await w.enable();
 
-      console.log('oooooo');
-
-      /* const provider = new ethers.providers.Web3Provider(w);
-      console.log('aaaaa'); */
+      const provider = new ethers.providers.Web3Provider(w);
+      const bal = await provider.getBalance(connector.accounts[0]);
 
       console.log(
-        w.accounts,
-        //await provider.getBalance(connector.accounts[0]),
-        'ss'
+        w.chainId,
+        ethers.utils.formatEther(bal)
+        //provider.getSigner()
       );
-      /*  */
 
-      /*
       if (a?.mintNFT) {
-        a.mintNFT({
-          contract,
-          eventHandler: evt,
-          mintingPrice: 1,
-          signer: provider.getSigner(),
-          userAddress: connector.accounts[0],
-          contractAddress: '0x1dF2Ec09C1f1452483893E31A9424e30EF876b58',
-        });
-      } */
+        try {
+          const contRes = await a.mintNFT({
+            contract,
+            eventHandler: evt,
+            mintingPrice: 1,
+            signer: provider.getSigner(),
+            userAddress: connector.accounts[0],
+            contractAddress: '0xaC89B6FCA7821B9e28AF6e1bDF907120e412Bc1a',
+            provider,
+          });
+
+          // contRes.on('NFTMinted', console.log);
+        } catch (e) {
+          console.log(e);
+        }
+      }
     }
   };
 

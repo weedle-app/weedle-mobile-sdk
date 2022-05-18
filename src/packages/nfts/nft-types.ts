@@ -1,4 +1,4 @@
-import type { Signer } from 'ethers';
+import type { Contract, Signer } from 'ethers';
 import type { ProvidersType } from '../../internal/types';
 import type { APIParams } from '../base-package';
 // import type { ABIContractType } from '../types';
@@ -89,6 +89,7 @@ export interface MintNFTRequest extends APIParams {
   mintingPrice: number;
   contractAddress?: string;
   contractId?: string;
+  provider?: any;
 }
 
 export interface MintNFTEvent {
@@ -103,5 +104,5 @@ export interface NFTServiceProvider {
   getNFTsInCollection: (
     props: GetNFTsInCollectionProps
   ) => GetNFTsInCollectionResponse; */
-  mintNFT?: (props: MintNFTRequest) => Promise<void>;
+  mintNFT?: (props: MintNFTRequest) => Promise<Contract>;
 }
