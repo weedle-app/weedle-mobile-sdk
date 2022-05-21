@@ -1,9 +1,13 @@
 export type ProvidersType = 'alchemy' | 'weedle' | undefined;
 
 export interface InitOptions {
-  serverUrl: string | undefined;
-  appId: string | undefined;
-  chain?: ProvidersType;
+  rpc?: {
+    url?: string;
+    chainId?: number;
+  };
+  provider?: {
+    name: ProvidersType;
+    url?: string;
+    appId?: string;
+  };
 }
-
-export type ChainType = 'ethereum';

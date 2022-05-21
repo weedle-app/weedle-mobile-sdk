@@ -108,9 +108,10 @@ const authProps: AuthServiceProviderProps = {
 
 export default function App() {
   const client = WeedleRnSdkView.initialize({
-    appId: 'someId',
-    serverUrl: 'ddd',
-    chain: 'alchemy',
+    rpc: {
+      chainId: 1337,
+      url: 'localhost:8545',
+    },
   });
 
   useEffect(() => {

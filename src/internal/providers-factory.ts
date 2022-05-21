@@ -1,8 +1,7 @@
 import { ethers } from 'ethers';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 
-// type ProviderNameType = 'alchemy' | 'infura' | 'mainnet';
-type EnvironmentNameType = 'mainnet' | 'ropsten' | 'rinkeby' | 'goerli';
+export type ChainEnvironmentName = 'mainnet' | 'ropsten' | 'rinkeby' | 'goerli';
 
 const getClientId = (environment: string): number => {
   switch (environment) {
@@ -20,7 +19,7 @@ const getClientId = (environment: string): number => {
 };
 
 export const WeedleProviderFactory = (
-  environment: EnvironmentNameType = 'ropsten',
+  environment: ChainEnvironmentName = 'ropsten',
   url = '',
   writerObject?: any
 ) => {
