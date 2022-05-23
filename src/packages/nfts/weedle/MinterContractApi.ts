@@ -9,7 +9,7 @@ const MinterContractApi = (config: InitOptions) =>
       // verify api key
       // fetch abi if remote
       // create hash and signature
-      // console.log({ config });
+      console.log({ config });
       // console.log(props.userAddress, props.contract.abi, props.signer);
 
       const contract = new ethers.Contract(

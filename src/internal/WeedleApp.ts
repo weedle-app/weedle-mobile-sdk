@@ -17,7 +17,7 @@ const verifyProvider = ({ provider }: InitOptions) => {
   if (
     !provider?.name ||
     (provider?.name === 'weedle' && !provider?.appId) ||
-    (provider?.name && !provider?.url)
+    (provider?.name && !provider?.url && !provider.environment)
   ) {
     return false;
   }

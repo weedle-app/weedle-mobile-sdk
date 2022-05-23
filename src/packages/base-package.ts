@@ -1,7 +1,7 @@
 import type { InitOptions } from '../internal/types';
 
 class BasePackage {
-  _config: InitOptions = { appId: '', serverUrl: '' };
+  _config: InitOptions = { rpc: {}, provider: { name: 'weedle' } };
 
   constructor(config: InitOptions) {
     this._config = config;

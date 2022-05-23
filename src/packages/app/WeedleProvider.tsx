@@ -1,25 +1,17 @@
 import React, { createContext, useContext } from 'react';
+import type { InitOptions } from '../../internal/types';
 import type WeedleApp from '../../internal/WeedleApp';
 
-type Web3ProviderNameType = 'alchemy' | 'infura' | 'mainnet';
-
-interface Web3provider {
-  name: Web3ProviderNameType;
-}
-
 interface WeedleProviderProps {
-  appId: string | undefined;
-  serverUrl: string | undefined;
-  web3Provider?: Web3provider;
+  config: InitOptions;
 }
 
 interface WeedleContextProps {
   client: WeedleApp;
 }
 
-const initOptions = {
-  appId: undefined,
-  serverUrl: undefined,
+const initOptions: WeedleProviderProps = {
+  config: {},
 };
 
 const WeedleAppContext = createContext<WeedleProviderProps>(initOptions);
@@ -33,19 +25,19 @@ export const useWeedleApp = () => {
 };
 
 const WeedleProvider = (props: React.PropsWithChildren<WeedleContextProps>) => {
-  const { client = null } = props;
+  const { client } = props;
   if (client && !client.isInitialized) {
     throw new Error(
       'You need to initialize the app before use. Please call .initialize({serverUrl, appId}) first.'
     );
   }
-  const config = client?.getConfig();
+
+  const config = client.getConfig();
 
   return (
     <WeedleAppContext.Provider
       value={{
-        appId: config?.appId,
-        serverUrl: config?.serverUrl,
+        config,
       }}
     >
       {props.children}

@@ -1,13 +1,11 @@
 import React, { createContext, useContext } from 'react';
-import { validateProps as validateWalletConnectProps } from './WalletConnect';
+import { validateProps as validateWalletConnectProps } from './WalletConnectProvider';
 
 import WalletConnectProvider, {
   type WalletConnectProviderProps,
 } from '@walletconnect/react-native-dapp';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import type { IAsyncStorage } from './WalletConnect/AsyncStorage';
-import { useWeedleApp } from '../app';
-import { validateAppConfig } from '../../internal/WeedleApp';
+import type { IAsyncStorage } from './WalletConnectProvider/AsyncStorage';
 
 type AuthAdapterTypes = 'walletconnect' | string;
 type AuthAdapterOptions = Partial<WalletConnectProviderProps>;
@@ -36,9 +34,6 @@ const AuthServiceProvider = (
   if (!props) {
     throw new Error('Please provide an adapter type you wish to use.');
   }
-
-  const { appId, serverUrl } = useWeedleApp();
-  validateAppConfig({ appId, serverUrl });
 
   const renderAuthContainer = () => {
     switch (props.adapter) {

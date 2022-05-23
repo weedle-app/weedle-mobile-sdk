@@ -9,5 +9,15 @@ export interface InitOptions {
     name: ProvidersType;
     url?: string;
     appId?: string;
+    environment: string;
+  };
+  networkMetaData?: {
+    chainName: string;
+    nativeCurrency: {
+      name: string;
+      symbol: string;
+      decimals: number;
+      blockExplorerUrls?: string[];
+    };
   };
 }

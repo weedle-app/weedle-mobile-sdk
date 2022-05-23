@@ -3,10 +3,11 @@ import {
   useWalletConnect,
   // WalletConnectProviderProps,
 } from '@walletconnect/react-native-dapp';
-import { StyleSheet, View, Button, Linking, Text } from 'react-native';
-import WeedleRnSdkView, {
+import { StyleSheet, View, Button, Linking } from 'react-native';
+import WeedleRnSdk, {
   AuthServiceProvider,
   WeedleProvider,
+  useWeedleAuth,
 } from 'weedle-rn-sdk';
 import type { AuthServiceProviderProps } from '../../src/packages/auth';
 import type WeedleApp from '../../src/internal/WeedleApp';
@@ -26,33 +27,29 @@ const HandleWalletConnect = ({ client }: { client: WeedleApp }) => {
   const provider = useRef<Web3Provider | null>(null);
   const [signer, setSigner] = useState<JsonRpcSigner>(); */
   const connector = useWalletConnect();
+  const { getWalletConnectSession, getWalletConnectSigner } = useWeedleAuth();
   const [isConnected, setIsConnected] = useState(false);
   // const { getEvmBlock } = WeedleRnSdkView.WeedleNFT.useWeedleNFT();
 
   useEffect(() => {
     setIsConnected(connector.connected);
     if (connector.connected) {
-      console.log({ acc: connector.accounts });
+      const a = getWalletConnectSession();
+
+      // console.log({ acc: a.accounts, au: connector.connected });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connector]);
 
   const evt = (id: any, ad: any, qt: any) => {
     console.log({ id, ad, qt });
   };
-
+  //WeedleRnSdk.;
   const testRunContract = async () => {
     if (isConnected) {
-      const a = client.nfts('weedle');
-
-      const w = new WalletConnectProvider({
-        connector,
-        qrcode: false,
-        rpc: {
-          1337: 'http://127.0.0.1:8545',
-        },
-        chainId: 1337,
-      });
-      await w.enable();
+      const a = await getWalletConnectSigner();
+      // console.log(a._isSigner, a._address, 'signer');
+      /* const a = client.nfts('weedle');
 
       const provider = new ethers.providers.Web3Provider(w);
       const bal = await provider.getBalance(connector.accounts[0]);
@@ -79,7 +76,7 @@ const HandleWalletConnect = ({ client }: { client: WeedleApp }) => {
         } catch (e) {
           console.log(e);
         }
-      }
+      } */
     }
   };
 
@@ -107,11 +104,28 @@ const authProps: AuthServiceProviderProps = {
 };
 
 export default function App() {
-  const client = WeedleRnSdkView.initialize({
+  const client = WeedleRnSdk.initialize({
     rpc: {
+      url: 'http://localhost:8545',
       chainId: 1337,
-      url: 'localhost:8545',
     },
+    /* provider: {
+      name: 'alchemy',
+      url: 'https://eth-ropsten.alchemyapi.io/v2/<key>>',
+      environment: 'ropsten',
+    }, */
+    /*  rpc: {
+      chainId: 137,
+      url: 'https://rpc-mainnet.matic.network',
+    },
+    networkMetaData: {
+      chainName: 'Matic Mainnet',
+      nativeCurrency: {
+        name: 'MATIC',
+        symbol: 'MATIC',
+        decimals: 18,
+      },
+    }, */
   });
 
   useEffect(() => {
