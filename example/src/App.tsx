@@ -35,9 +35,18 @@ const HandleWalletConnect = ({ client }: { client: WeedleApp }) => {
     setIsConnected(connector.connected);
     if (connector.connected) {
       const a = getWalletConnectSession();
+      /*
+      // Fired on disconnect from metamask
 
+      connector.on('disconnect', () => {
+        console.log('disconnect wallet');
+      }); */
       // console.log({ acc: a.accounts, au: connector.connected });
     }
+
+    return () => {
+      connector.off('disconnect');
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connector]);
 

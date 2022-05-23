@@ -27,7 +27,6 @@ const switchOrAddNetwork = async ({
     const unknownChain = e.message.includes(
       'Try adding the chain using wallet_addEthereumChain first'
     );
-
     if (unknownChain) {
       await walletConnectContext.sendCustomRequest({
         method: 'wallet_addEthereumChain',
